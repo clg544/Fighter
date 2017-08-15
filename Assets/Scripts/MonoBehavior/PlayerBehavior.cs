@@ -352,4 +352,9 @@ public class PlayerBehavior : MonoBehaviour
     {
         return faceRight;
     }
+
+    public float getMaxSpeed()
+    {
+        return MAX_SPEED;
+    }
 }

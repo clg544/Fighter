@@ -19,7 +19,7 @@ public class PlayerCameraScript : MonoBehaviour {
     private float PLAYER_Y_ADJ;
     /* Camera moves at 1 / CAMERA_SPEED */
     [SerializeField]
-    private float CAMERA_SPEED;
+    private float CAMERA_LAG;
 
     public GameObject MyTarget
     {
@@ -35,6 +35,22 @@ public class PlayerCameraScript : MonoBehaviour {
     }
 
 
+    private void CameraTracking()
+    {
+        /* Adjust the Camera value to the right Z-plane */
+        Vector3 target = MyTarget.transform.position;
+        target.z = myCamera.transform.position.z;
+
+        /* Camera speeds up as player leaves centre */
+        float speed = Vector3.Distance(myCamera.transform.position, target) / CAMERA_LAG;
+
+        /* Set the new camera position */
+        myCamera.transform.position = Vector3.MoveTowards(myCamera.transform.position, target, speed);
+
+        return;
+    }
+
+
     // Use this for initialization
     void Start ()
     {
@@ -42,24 +58,18 @@ public class PlayerCameraScript : MonoBehaviour {
 
         ZAdjustVect = new Vector3(0, 0, Z_ADJ);
         PlayerYAdjustVect = new Vector3(0, PLAYER_Y_ADJ, 0);
-        CameraSpeedVect = new Vector3(1 / CAMERA_SPEED, 1 / CAMERA_SPEED, 1 / CAMERA_SPEED);
 
         /* Initiate Camera */
         myCamera.transform.position = MyTarget.transform.position;
-    }
-
-
-    private Vector3 CameraTracking()
-    {
-        return MyTarget.transform.position;
+        myCamera.transform.position += ZAdjustVect;
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         Debug.Log("Moving Camera...");
-
-        myCamera.transform.position = CameraTracking();
-        myCamera.transform.position += ZAdjustVect;
-        myCamera.transform.position += PlayerYAdjustVect;
+        
+        CameraTracking();
+        //myCamera.transform.position += ZAdjustVect;
+        //myCamera.transform.position += PlayerYAdjustVect;
     }
 }
