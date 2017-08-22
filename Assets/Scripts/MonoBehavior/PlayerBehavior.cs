@@ -30,13 +30,13 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField]
     private int STAB_COOL;
     [SerializeField]
-    private int STAB_STAMINA;
+    private int STAB_ENERGY;
     [SerializeField]
     private float SLASH_SPEED;
     [SerializeField]
     private int SLASH_COOL;
     [SerializeField]
-    private int SLASH_STAMINA;
+    private int SLASH_ENERGY;
     private Vector3 STAB_VECTOR;
     private Vector3 SLASH_VECTOR;
 
@@ -44,7 +44,7 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField]
     private int MAX_HEALTH;
     [SerializeField]
-    private int MAX_STAMINA;
+    private int MAX_ENERGY;
 
     /* Combat Management */ 
     [SerializeField]
@@ -63,7 +63,7 @@ public class PlayerBehavior : MonoBehaviour
 
     /*  Player Stats */
     private int health;
-    private int stamina;
+    private int energy;
     
     /* Objects that belong to this player */
     public GameObject player;           /* Holds our player */
@@ -159,7 +159,7 @@ public class PlayerBehavior : MonoBehaviour
     public void Stab()
     {
         /* Abort if in cooldown */
-        if (atkCooldown > 0)
+        if ((atkCooldown > 0) || (energy < 0))
             return;
 
         /* Create an inversable X vector */
@@ -174,14 +174,14 @@ public class PlayerBehavior : MonoBehaviour
         newAtk.transform.parent = this.transform;
 
         atkCooldown += STAB_COOL;
-        this.stamina -= STAB_STAMINA;
+        this.energy -= STAB_ENERGY;
     }
     public void Slash()
     {
         /* Abort if in cooldown */
-        if (atkCooldown > 0)
+        if ((atkCooldown > 0) || (energy < 0))
             return;
-        
+
         Vector3 inverseX = new Vector3(faceRight ? 1 : -1, 1, 1);
         Vector3 attackPos = new Vector3(0, 1, 0);
         Vector3 pos = Vector3.Scale(attackPos, inverseX) + this.transform.position;
@@ -192,7 +192,7 @@ public class PlayerBehavior : MonoBehaviour
         newAtk.GetComponent<Rigidbody2D>().velocity = Vector3.Scale(SLASH_VECTOR, inverseX);
 
         atkCooldown += SLASH_COOL;
-        this.stamina -= SLASH_STAMINA;
+        this.energy -= SLASH_ENERGY;
     }
     /**
      * SetAttackList - A general attack given via a Linked list.  Each frame will instantiate
@@ -295,7 +295,7 @@ public class PlayerBehavior : MonoBehaviour
 
         /* Statistics */
         health = MAX_HEALTH;
-        stamina = MAX_STAMINA;
+        energy = MAX_ENERGY;
     }
 	
 	// Update is called once per frame
@@ -321,8 +321,8 @@ public class PlayerBehavior : MonoBehaviour
             //Slow();
         }
 
-        if (stamina < MAX_STAMINA)
-            stamina++;
+        if (energy < MAX_ENERGY)
+            energy++;
 
 
         mySprite.color = new Color(1f, 1f, 1f, 1f);
@@ -356,5 +356,22 @@ public class PlayerBehavior : MonoBehaviour
     public float getMaxSpeed()
     {
         return MAX_SPEED;
+    }
+
+    public int getMaxHealth()
+    {
+        return MAX_HEALTH;
+    }
+    public int getMaxEnergy()
+    {
+        return MAX_ENERGY;
+    }
+    public int getHealth()
+    {
+        return health;
+    }
+    public int getEnergy()
+    {
+        return energy;
     }
 }

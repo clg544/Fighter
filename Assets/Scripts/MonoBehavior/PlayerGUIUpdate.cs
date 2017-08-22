@@ -22,12 +22,14 @@ public class PlayerGUIUpdate : MonoBehaviour {
     // Use this for initialization
     void Start () {
         myPlayerBehavior = myPlayer.GetComponent<PlayerBehavior>();
+
+        myHealthBar.maxValue = myPlayerBehavior.getMaxHealth();
+        myEnergyBar.maxValue = myPlayerBehavior.getMaxEnergy();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(myPlayerBehavior.getHealthRatio().ToString());
-        myHealthBar.value = myPlayerBehavior.getHealthRatio();
-        myEnergyBar.value = myPlayerBehavior.getEnergyRatio();
+        myHealthBar.value = myPlayerBehavior.getHealth();
+        myEnergyBar.value = myPlayerBehavior.getEnergy();
     }
 }
