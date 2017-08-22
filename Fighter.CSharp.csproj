@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\MonoBehavior\PlayerBehavior.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\PlayerCameraScript.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\PlayerCameraTargetScript.cs" />
+    <Compile Include="Assets\Scripts\MonoBehavior\PlayerGUIUpdate.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\hitbox.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
