@@ -16,7 +16,8 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField]
     private float SLOW_AMT;     // Speed divided by this each frame that player is not moving
 
-    bool canJump;
+    [SerializeField]
+    private bool canJump;
     [SerializeField]
     private int JUMP_SPEED;
     [SerializeField]
@@ -59,6 +60,8 @@ public class PlayerBehavior : MonoBehaviour
      * 0 - Left
      */
     private bool faceRight;
+    [SerializeField]
+    private bool canMoveForward;
     private Vector3 SWITCH_DIR;
 
     /*  Player Stats */
@@ -88,10 +91,17 @@ public class PlayerBehavior : MonoBehaviour
     /* Player Movement */
     public void MoveLeft()
     {
+        if (faceRight)
+        {
+            faceRight = false;
+            canMoveForward = true;  // Until we hit a wall...
+            FaceLeft();
+        }
+
         // Need special case for turning around
         if (Mathf.Abs(playerBody.velocity.x) <= MAX_SPEED)
         {
-            playerBody.velocity = new Vector2(-MAX_SPEED, playerBody.velocity.y);
+            playerBody.velocity = new Vector2(-MAX_SPEED * (canMoveForward?1:0), playerBody.velocity.y);
         }
 
         if (faceRight)
@@ -105,12 +115,13 @@ public class PlayerBehavior : MonoBehaviour
         // Need special case for turning around
         if (Mathf.Abs(playerBody.velocity.x) <= MAX_SPEED)
         {
-            playerBody.velocity = new Vector2(MAX_SPEED, playerBody.velocity.y);
+            playerBody.velocity = new Vector2(MAX_SPEED * (canMoveForward?1:0), playerBody.velocity.y);
         }
 
         if (!faceRight)
         {
             faceRight = true;
+            canMoveForward = true;  // Until we hit a wall...
             FaceRight();
         }
     }
@@ -129,6 +140,10 @@ public class PlayerBehavior : MonoBehaviour
         float newX = playerBody.velocity.x;
         newX /= SLOW_AMT;
         playerBody.velocity = new Vector2(newX, playerBody.velocity.y);
+    }
+    public void HitWall()
+    {
+        canMoveForward = false;
     }
 
     /* Player Jumping */
@@ -300,6 +315,7 @@ public class PlayerBehavior : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+
         /* Reduce Attack Cooldown */ 
         if (atkCooldown > 0)
             atkCooldown -= 1;
@@ -315,21 +331,13 @@ public class PlayerBehavior : MonoBehaviour
             playerBody.velocity = new Vector2(playerBody.velocity.x, JUMP_SPEED);
         }
 
-        if(playerBody.velocity.x != 0)
-        {
-            //Debug.Log("pb calling slow");
-            //Slow();
-        }
-
         if (energy < MAX_ENERGY)
             energy++;
 
 
         mySprite.color = new Color(1f, 1f, 1f, 1f);
         setSpriteValues();
-
-
-
+        
         /* Iterate through an active attack at each frame */
         if(curAttackNode != null)
         {

@@ -54,6 +54,7 @@ public class InputManagerScript : MonoBehaviour {
         {
             playerBehavior.Slow();
         }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             playerBehavior.Jump();

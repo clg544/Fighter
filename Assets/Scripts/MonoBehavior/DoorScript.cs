@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class DoorScript : MonoBehaviour {
-
+    [SerializeField]
     bool open;
 
     SpriteRenderer mySprite;
@@ -14,8 +14,8 @@ public class DoorScript : MonoBehaviour {
     void Activate()
     {
         open = !(open);
-        mySprite.enabled = !(open);
-        myCollider.isTrigger = open;
+        mySprite.enabled = open;
+        myCollider.enabled = open;
 
         return;
     } 
@@ -23,8 +23,6 @@ public class DoorScript : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        open = false;
-
         mySprite = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<BoxCollider2D>();
     }
