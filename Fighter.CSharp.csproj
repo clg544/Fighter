@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\MonoBehavior\ButtonScript.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\DoorScript.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\GroundCheck.cs" />
+    <Compile Include="Assets\Scripts\MonoBehavior\Hitbox.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\InputManagerScript.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\JoypadInput.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\PlayerBehavior.cs" />
@@ -80,7 +81,9 @@
     <Compile Include="Assets\Scripts\MonoBehavior\PlayerCameraTargetScript.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\PlayerGUIUpdate.cs" />
     <Compile Include="Assets\Scripts\MonoBehavior\WallCheck.cs" />
-    <Compile Include="Assets\Scripts\MonoBehavior\hitbox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Data\AttackList.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

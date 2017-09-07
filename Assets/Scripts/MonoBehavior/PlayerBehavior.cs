@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class PlayerBehavior : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class PlayerBehavior : MonoBehaviour
     private int SLASH_ENERGY;
     private Vector3 STAB_VECTOR;
     private Vector3 SLASH_VECTOR;
-
+    
     /* Statistic Variables */
     [SerializeField]
     private int MAX_HEALTH;
@@ -230,17 +231,17 @@ public class PlayerBehavior : MonoBehaviour
     /**
      * hitboxAtLocation - Create a hitbox at the location, for one frame
      */
-    private hitbox hitboxAtLocation(Vector3 pos)
+    private Hitbox hitboxAtLocation(Vector3 pos)
     {
         GameObject newAtk = Instantiate(attack, (pos + this.transform.position), Quaternion.identity) as GameObject;
         newAtk.transform.parent = this.transform;
-        newAtk.GetComponent<hitbox>().setKillframe(1);
+        newAtk.GetComponent<Hitbox>().setKillframe(1);
 
-        return newAtk.GetComponent<hitbox>();
+        return newAtk.GetComponent<Hitbox>();
     }
 
     /* React to Damage */
-    public void HitRegister(hitbox hitBy)
+    public void HitRegister(Hitbox hitBy)
     {
         if (hitBy.getCollider().IsTouching(this.sheild.GetComponent<BoxCollider2D>()))
         {
@@ -342,8 +343,8 @@ public class PlayerBehavior : MonoBehaviour
         if(curAttackNode != null)
         {
             Vector3 inverseX = new Vector3(faceRight ? 1 : -1, 1, 1);
-            
-            hitbox curBox = hitboxAtLocation(Vector3.Scale(inverseX, curAttackNode.Value));
+
+            Hitbox curBox = hitboxAtLocation(Vector3.Scale(inverseX, curAttackNode.Value));
             if (curAttackNode.Next != null)
             {
                 curAttackNode = curAttackNode.Next;

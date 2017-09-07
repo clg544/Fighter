@@ -76,13 +76,13 @@ public class InputManagerScript : MonoBehaviour {
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                playerBehavior.SetAttackList(attackDict.PLAYER_STAB);
+                //playerBehavior.SetAttackList(attackDict.PLAYER_STAB);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            playerBehavior.SetAttackList(attackDict.PLAYER_OVERHEAD_SLASH);
+            //playerBehavior.SetAttackList(attackDict.PLAYER_OVERHEAD_SLASH);
         }
 
         if (Input.GetKeyDown(KeyCode.E))
