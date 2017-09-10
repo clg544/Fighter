@@ -6,73 +6,126 @@ using System.IO;
 
 public class AttackDictionary : MonoBehaviour {
 
-    private LinkedList<attackDescriptor> AttackList;
+    private LinkedList<AttackDescriptor> AttackList;
         
-    public class attackDescriptor
+    public class AttackDescriptor
     {
         public string attackName;
-        public SortedList<Hitbox, int> attackList;
+        public SortedList<int, Hitbox.HitboxDescriptor> attackList;
+    }
+
+
+    public override string ToString()
+    {
+
+        string s = "";
+
+        char tab = '\t';
+        string doubleTab = "\t\t";
+        
+        foreach(AttackDescriptor descriptor in AttackList)
+        {
+            s += descriptor.attackName + ":\n";
+
+            foreach (Hitbox.HitboxDescriptor hb in descriptor.attackList.Values)
+            {
+                s += tab + "HitBox " + hb.number + ":\n\n";
+                s += tab + "Critical Traits:\n";
+
+                Debug.Log("Rotation" + hb.rotation);
+
+                Debug.Log(hb.number);
+                s += doubleTab + "Number=" + hb.number + '\n';
+                s += doubleTab + "Length=" + hb.length + '\n';
+                s += doubleTab + "Width=" + hb.width + '\n';
+                s += doubleTab + "Rotation=" + hb.rotation + '\n';
+                s += doubleTab + "Duration=" + hb.duration + '\n';
+                s += doubleTab + "DamageAmount=" + hb.damage + '\n';
+                s += doubleTab + "DamageType=" + hb.damageType + '\n';
+
+                s += tab + "Optional Traits:\n";
+
+                LinkedListNode<string> k = hb.optionalTraitKeys.First;
+                LinkedListNode<string> v = hb.optionalTraitValues.First;
+                while(k != null)
+                {
+                    Debug.Break();
+                    s += doubleTab + k.Value + '=' + v.Value + '\n';
+                    k = k.Next;
+                }
+
+                s += '\n';
+            }
+        }
+        
+        return s;
     }
 
 
     private int readAttackFile(string filePath)
     {
         XmlDocument myDoc = new XmlDocument();
-        myDoc.PreserveWhitespace = true;
+        myDoc.PreserveWhitespace = false;
         myDoc.Load(filePath);
 
         XmlNode curNode = myDoc.FirstChild;
 
-        Debug.Log(curNode.Name);
-
         // Fetch all of the top level children
-        XmlNodeList XmlAttackList = curNode.ChildNodes;
+        XmlNodeList XmlAttackList = curNode.SelectNodes("Attack");
         
         // For each attack...
         foreach(XmlNode curAttack in XmlAttackList)
         {
+
             // Get the attack descriptor ready
-            attackDescriptor newAttack = new attackDescriptor();
+            AttackDescriptor newAttack = new AttackDescriptor();
             this.AttackList.AddLast(newAttack);
-            newAttack.attackList = new SortedList<Hitbox, int>();
+            newAttack.attackList = new SortedList<int, Hitbox.HitboxDescriptor>();
 
             // Name the attack with the Name Value
-            newAttack.attackName = curAttack.Name;
+            newAttack.attackName = curAttack.SelectSingleNode("Name").InnerText;
 
             // Get Element list to extract information
             XmlNodeList HitboxList = curAttack.SelectNodes("Hitbox");
             
             foreach (XmlNode curHitbox in HitboxList)
             {
-                Hitbox newHitbox = new Hitbox();
+
+                /* Set Up the new Hitbox for use right away */
+                Hitbox.HitboxDescriptor newHitbox = new Hitbox.HitboxDescriptor();
+                newHitbox.optionalTraitKeys = new LinkedList<string>();
+                newHitbox.optionalTraitValues = new LinkedList<string>();
+
+                /* Prioritize the hitbox number */
+                newHitbox.number = int.Parse(curHitbox.SelectSingleNode("Number").InnerText);
+
                 XmlNodeList valueList = curHitbox.ChildNodes;
 
                 foreach(XmlNode value in valueList)
                 {
-                    Debug.Log(value.Name);
-                    Debug.Log(value.InnerText);
-
                     switch (value.Name)
                     {
+                        /* Non-Default cases are critical, and stored directly in the class */
                         case ("Number"):
                             newHitbox.number = int.Parse(value.InnerText);
                             break;
 
                         case ("Length"):
-                            newHitbox.length = int.Parse(value.InnerText);
+                            newHitbox.length = float.Parse(value.InnerText);
                             break;
 
                         case ("Width"):
-                            newHitbox.width = int.Parse(value.InnerText);
+                            newHitbox.width = float.Parse(value.InnerText);
                             break;
 
                         case ("Rotation"):
-                            newHitbox.rotation = int.Parse(value.InnerText);
+                            Debug.Log("Rotation" + float.Parse(value.InnerText));
+                            newHitbox.rotation = float.Parse(value.InnerText);
                             break;
 
                         case ("Duration"):
-                            newHitbox.number = int.Parse(value.InnerText);
-                            break;
+                            newHitbox.duration = int.Parse(value.InnerText);
+                             break;
 
                         case ("DamageAmount"):
                             newHitbox.damage = int.Parse(value.InnerText);
@@ -80,13 +133,17 @@ public class AttackDictionary : MonoBehaviour {
 
                         case ("DamageType"):
                             newHitbox.damageType = (Hitbox.DAMAGE_TYPE)int.Parse(value.InnerText);
-                            break;
+                           break;
 
-                        case ("isPoisonous"):
-                            newHitbox.isPoisonous = bool.Parse(value.InnerText);
+                        /* Non-critical traits are stored in a list to support future growth */
+                        default:
+                            newHitbox.optionalTraitKeys.AddLast(value.Name);
+                            newHitbox.optionalTraitValues.AddLast(value.InnerText);
                             break;
                     }
                 }
+                /* Insert the new hitbox based on it's number */
+                newAttack.attackList.Add(newHitbox.number, newHitbox);
             }
         }
 
@@ -96,17 +153,14 @@ public class AttackDictionary : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Awake () {
-        AttackList = new LinkedList<attackDescriptor>();
+	void Awake ()
+    {
+        AttackList = new LinkedList<AttackDescriptor>();
 
-        try
-        {
-            readAttackFile(".\\Assets\\Data\\AttackList.xml");
-        }
-        catch(System.Exception e)
-        {
-            Debug.Log(e.Message);
-        }
+        /* Create the AttackDictionary from an XML File */
+        readAttackFile(".\\Assets\\Data\\AttackList.xml");
+
+        Debug.Log(this.ToString());
     }
 	
 	// Update is called once per frame

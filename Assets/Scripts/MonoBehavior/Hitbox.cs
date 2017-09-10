@@ -6,30 +6,31 @@ public class Hitbox : MonoBehaviour
 {
     public enum DAMAGE_TYPE { STANDARD }
 
-    /* Descriptor Data */
-    public int number;
-    public float length;
-    public float width;
-    public float rotation;
-    public int duration;
-    public int damage;
-    public DAMAGE_TYPE damageType;
-    public bool isPoisonous;
-
-    private BoxCollider2D collider;
-    private int frameCount;
-
-    // Use this for initialization
-    void Start()
+    public struct HitboxDescriptor
     {
-        damage = 10;
-        collider = this.GetComponent<BoxCollider2D>();
-        frameCount = 0;
+        /* Descriptor Data */
+        public int number;
+        public float length;
+        public float width;
+        public float rotation;
+        public int duration;
+        public int damage;
+        public DAMAGE_TYPE damageType;
+
+        /* Put non critical qualities into a dictionary to be read */
+        public LinkedList<string> optionalTraitKeys;
+        public LinkedList<string> optionalTraitValues;
     }
 
+    private HitboxDescriptor myDescriptor;
+    private BoxCollider2D myCollider;
+    private int frameCount;
+    
     /* Later, we could return the result of the attack */
     void OnTriggerEnter2D(Collider2D coll)
     {
+        Debug.Break();
+
         /* Ignore Hitbox Creator */
         if (coll.transform == this.transform.parent)
             return;
@@ -41,11 +42,22 @@ public class Hitbox : MonoBehaviour
         }
     }
 
+    // Use this for initialization
+    void Awake()
+    {
+        Debug.Break();
+
+        myCollider = this.GetComponent<BoxCollider2D>();
+
+        frameCount = 0;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        Debug.Break();
 
-        if (frameCount >= duration)
+        if (frameCount >= myDescriptor.duration)
         {
             GameObject.Destroy(gameObject);
         }
@@ -58,22 +70,22 @@ public class Hitbox : MonoBehaviour
      */
     public int getKillframe()
     {
-        return duration;
+        return myDescriptor.duration;
     }
     /**
      *  setKillfreame - Set the number of frames before this hitbox is destroyed
      */
     public void setKillframe(int kill)
     {
-        duration = kill;
+        myDescriptor.duration = kill;
         return;
     }
     public int getDamage()
     {
-        return this.damage;
+        return myDescriptor.damage;
     }
     public BoxCollider2D getCollider()
     {
-        return this.collider;
+        return this.myCollider;
     }
 }

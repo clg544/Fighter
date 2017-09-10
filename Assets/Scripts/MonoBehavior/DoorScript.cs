@@ -16,7 +16,7 @@ public class DoorScript : MonoBehaviour {
         open = !(open);
         mySprite.enabled = open;
         myCollider.enabled = open;
-
+        
         return;
     } 
       

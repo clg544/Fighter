@@ -18,7 +18,8 @@ public class InputManagerScript : MonoBehaviour {
         playerBehavior = gameObject.GetComponent<PlayerBehavior>();
 
         /* Public Data */
-        attackDict = GameObject.FindGameObjectWithTag("Managers").GetComponent<AttackDictionary>();
+        Debug.Break();
+        //attackDict = GameObject.FindGameObjectWithTag("Managers").GetComponent<AttackDictionary>();
     }
 
     private void Update ()

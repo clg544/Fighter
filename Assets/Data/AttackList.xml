@@ -3,35 +3,35 @@
     <Name>Attack001</Name>
     <Hitbox>
       <Number>0</Number>
-      <Length>1</Length>
+      <Length>1.0</Length>
       <Width>1</Width>
       <Rotation>1</Rotation>
       <Duration>1</Duration>
       <DamageAmount>1</DamageAmount>
       <DamageType>0</DamageType>
       <isPoisonous>false</isPoisonous>
-      </Hitbox>
-      <Hitbox>
-        <Number>1</Number>
-        <Length>1</Length>
-        <Width>1</Width>
-        <Rotation>1</Rotation>
-        <Duration>1</Duration>
-        <DamageAmount>10</DamageAmount>
-        <DamageType>0</DamageType>
-        <isPoisonous>false</isPoisonous>
-        </Hitbox>
-        <Hitbox>
-          <Number>2</Number>
-          <Length>1</Length>
-          <Width>1</Width>
-          <Rotation>1</Rotation>
-          <Duration>1</Duration>
-          <DamageAmount>10</DamageAmount>
-          <DamageType>0</DamageType>
-          <isPoisonous>false</isPoisonous>
-          </Hitbox>
-        </Attack>
+    </Hitbox>
+    <Hitbox>
+      <Number>1</Number>
+      <Length>1</Length>
+      <Width>1</Width>
+      <Rotation>1</Rotation>
+      <Duration>1</Duration>
+      <DamageAmount>10</DamageAmount>
+      <DamageType>0</DamageType>
+      <isPoisonous>false</isPoisonous>
+    </Hitbox>
+    <Hitbox>
+      <Number>2</Number>
+      <Length>1</Length>
+      <Width>1</Width>
+      <Rotation>1</Rotation>
+      <Duration>1</Duration>
+      <DamageAmount>10</DamageAmount>
+      <DamageType>0</DamageType>
+      <isPoisonous>false</isPoisonous>
+    </Hitbox>
+    </Attack>
   <Attack>
     <Name>Attack002</Name>
     <Hitbox>
@@ -42,27 +42,27 @@
       <Duration>2</Duration>
       <DamageAmount>20</DamageAmount>
       <DamageType>0</DamageType>
-      <isPoisonous>false</isPoisonous>
+      <isPoisonous>true</isPoisonous>
+    </Hitbox>
+    <Hitbox>
+      <Number>1</Number>
+      <Length>2</Length>
+      <Width>2</Width>
+      <Rotation>2</Rotation>
+      <Duration>2</Duration>
+      <DamageAmount>20</DamageAmount>
+      <DamageType>0</DamageType>
+      <isPoisonous>true</isPoisonous>
       </Hitbox>
-      <Hitbox>
-        <Number>2</Number>
-        <Length>2</Length>
-        <Width>2</Width>
-        <Rotation>2</Rotation>
-        <Duration>2</Duration>
-        <DamageAmount>20</DamageAmount>
-        <DamageType>0</DamageType>
-        <isPoisonous>false</isPoisonous>
-        </Hitbox>
-        <Hitbox>
-          <Number>2</Number>
-          <Length>2</Length>
-          <Width>2</Width>
-          <Rotation>2</Rotation>
-          <Duration>2</Duration>
-          <DamageAmount>20</DamageAmount>
-          <DamageType>0</DamageType>
-          <isPoisonous>false</isPoisonous>
-          </Hitbox>
-        </Attack>
+    <Hitbox>
+      <Number>2</Number>
+      <Length>2</Length>
+      <Width>2</Width>
+      <Rotation>2</Rotation>
+      <Duration>2</Duration>
+      <DamageAmount>20</DamageAmount>
+      <DamageType>0</DamageType>
+      <isPoisonous>true</isPoisonous>
+      </Hitbox>
+    </Attack>
 </AttackDictionary>
