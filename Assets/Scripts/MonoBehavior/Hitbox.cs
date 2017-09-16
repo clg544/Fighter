@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Hitbox : MonoBehaviour
 {
     public enum DAMAGE_TYPE { STANDARD }
 
+    /* Update XML Reader as well! */
     public struct HitboxDescriptor
     {
         /* Descriptor Data */
+        public int x;
+        public int y;
         public int number;
         public float length;
         public float width;
@@ -25,12 +29,11 @@ public class Hitbox : MonoBehaviour
     private HitboxDescriptor myDescriptor;
     private BoxCollider2D myCollider;
     private int frameCount;
-    
+    public bool destroyable;
+
     /* Later, we could return the result of the attack */
     void OnTriggerEnter2D(Collider2D coll)
     {
-        Debug.Break();
-
         /* Ignore Hitbox Creator */
         if (coll.transform == this.transform.parent)
             return;
@@ -45,24 +48,23 @@ public class Hitbox : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        Debug.Break();
-
         myCollider = this.GetComponent<BoxCollider2D>();
 
+        destroyable = false;
         frameCount = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Break();
-
-        if (frameCount >= myDescriptor.duration)
+        if (destroyable)
         {
-            GameObject.Destroy(gameObject);
+            if (frameCount >= myDescriptor.duration)
+            {
+                GameObject.Destroy(gameObject);
+            }
+            frameCount++;
         }
-
-        frameCount++;
     }
 
     /**
@@ -87,5 +89,9 @@ public class Hitbox : MonoBehaviour
     public BoxCollider2D getCollider()
     {
         return this.myCollider;
+    }
+    public HitboxDescriptor getDescriptor()
+    {
+        return myDescriptor;
     }
 }

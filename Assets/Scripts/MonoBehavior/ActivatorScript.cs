@@ -15,7 +15,6 @@ public class ActivatorScript : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D coll)
     {
-        Debug.Log("Removed Coll\n");
         if (coll.CompareTag("Activatables"))
             activatables.Remove(coll);
     }

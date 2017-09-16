@@ -8,7 +8,6 @@ public class Activatable : MonoBehaviour {
 
     public void Activate()
     {
-        Debug.Break();
         SendMessage("Activate", myActivate);
     }
 

@@ -2,6 +2,8 @@
   <Attack>
     <Name>Attack001</Name>
     <Hitbox>
+      <X>0</X>
+      <Y>2</Y>
       <Number>0</Number>
       <Length>1.0</Length>
       <Width>1</Width>
@@ -12,6 +14,8 @@
       <isPoisonous>false</isPoisonous>
     </Hitbox>
     <Hitbox>
+      <X>1</X>
+      <Y>1</Y>
       <Number>1</Number>
       <Length>1</Length>
       <Width>1</Width>
@@ -22,6 +26,8 @@
       <isPoisonous>false</isPoisonous>
     </Hitbox>
     <Hitbox>
+      <X>2</X>
+      <Y>0</Y>
       <Number>2</Number>
       <Length>1</Length>
       <Width>1</Width>
@@ -35,6 +41,8 @@
   <Attack>
     <Name>Attack002</Name>
     <Hitbox>
+      <X>0</X>
+      <Y>2</Y>
       <Number>0</Number>
       <Length>2</Length>
       <Width>2</Width>
@@ -45,6 +53,8 @@
       <isPoisonous>true</isPoisonous>
     </Hitbox>
     <Hitbox>
+      <X>1</X>
+      <Y>2</Y>
       <Number>1</Number>
       <Length>2</Length>
       <Width>2</Width>
@@ -55,6 +65,8 @@
       <isPoisonous>true</isPoisonous>
       </Hitbox>
     <Hitbox>
+      <X>2</X>
+      <Y>2</Y>
       <Number>2</Number>
       <Length>2</Length>
       <Width>2</Width>

@@ -6,15 +6,19 @@ using System.IO;
 
 public class AttackDictionary : MonoBehaviour {
 
-    private LinkedList<AttackDescriptor> AttackList;
+    private Dictionary<string, AttackDescriptor> AttackList;
         
     public class AttackDescriptor
     {
         public string attackName;
         public SortedList<int, Hitbox.HitboxDescriptor> attackList;
+
+        public bool Comparator(AttackDescriptor a, AttackDescriptor b)
+        {
+            return (string.Compare(a.attackName, b.attackName) == 0);
+        }
     }
-
-
+    
     public override string ToString()
     {
 
@@ -23,7 +27,7 @@ public class AttackDictionary : MonoBehaviour {
         char tab = '\t';
         string doubleTab = "\t\t";
         
-        foreach(AttackDescriptor descriptor in AttackList)
+        foreach(AttackDescriptor descriptor in AttackList.Values)
         {
             s += descriptor.attackName + ":\n";
 
@@ -49,7 +53,6 @@ public class AttackDictionary : MonoBehaviour {
                 LinkedListNode<string> v = hb.optionalTraitValues.First;
                 while(k != null)
                 {
-                    Debug.Break();
                     s += doubleTab + k.Value + '=' + v.Value + '\n';
                     k = k.Next;
                 }
@@ -60,7 +63,6 @@ public class AttackDictionary : MonoBehaviour {
         
         return s;
     }
-
 
     private int readAttackFile(string filePath)
     {
@@ -79,11 +81,13 @@ public class AttackDictionary : MonoBehaviour {
 
             // Get the attack descriptor ready
             AttackDescriptor newAttack = new AttackDescriptor();
-            this.AttackList.AddLast(newAttack);
+
+            // Create the data 
+            newAttack.attackName = curAttack.SelectSingleNode("Name").InnerText;
             newAttack.attackList = new SortedList<int, Hitbox.HitboxDescriptor>();
 
-            // Name the attack with the Name Value
-            newAttack.attackName = curAttack.SelectSingleNode("Name").InnerText;
+            // Add to the list
+            this.AttackList.Add(newAttack.attackName, newAttack);
 
             // Get Element list to extract information
             XmlNodeList HitboxList = curAttack.SelectNodes("Hitbox");
@@ -106,6 +110,14 @@ public class AttackDictionary : MonoBehaviour {
                     switch (value.Name)
                     {
                         /* Non-Default cases are critical, and stored directly in the class */
+                        case ("X"):
+                            newHitbox.x = int.Parse(value.InnerText);
+                            break;
+
+                        case ("Y"):
+                            newHitbox.y = int.Parse(value.InnerText);
+                            break;
+
                         case ("Number"):
                             newHitbox.number = int.Parse(value.InnerText);
                             break;
@@ -119,7 +131,6 @@ public class AttackDictionary : MonoBehaviour {
                             break;
 
                         case ("Rotation"):
-                            Debug.Log("Rotation" + float.Parse(value.InnerText));
                             newHitbox.rotation = float.Parse(value.InnerText);
                             break;
 
@@ -150,17 +161,31 @@ public class AttackDictionary : MonoBehaviour {
         return 0;
     }
 
-
-
-	// Use this for initialization
-	void Awake ()
+    public AttackDescriptor FindAttack(string s)
     {
-        AttackList = new LinkedList<AttackDescriptor>();
+        AttackDescriptor foundVal;
+
+        if (AttackList.TryGetValue(s, out foundVal))
+        {
+            return foundVal;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public Dictionary<string, AttackDescriptor> getAttackList()
+    {
+        return this.AttackList;
+    }
+
+    // Use this for initialization
+    void Awake ()
+    {
+        AttackList = new Dictionary<string, AttackDescriptor>();
 
         /* Create the AttackDictionary from an XML File */
         readAttackFile(".\\Assets\\Data\\AttackList.xml");
-
-        Debug.Log(this.ToString());
     }
 	
 	// Update is called once per frame
