@@ -111,11 +111,11 @@ public class AttackDictionary : MonoBehaviour {
                     {
                         /* Non-Default cases are critical, and stored directly in the class */
                         case ("X"):
-                            newHitbox.x = int.Parse(value.InnerText);
+                            newHitbox.x = float.Parse(value.InnerText);
                             break;
 
                         case ("Y"):
-                            newHitbox.y = int.Parse(value.InnerText);
+                            newHitbox.y = float.Parse(value.InnerText);
                             break;
 
                         case ("Number"):

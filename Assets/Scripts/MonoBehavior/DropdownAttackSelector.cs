@@ -7,7 +7,7 @@ public class DropdownAttackSelector : MonoBehaviour {
     [SerializeField]
     private GameObject manager;
     [SerializeField]
-    private GameObject hitTemplate;
+    private Hitbox hitTemplate;
     [SerializeField]
     private GameObject player;
 
@@ -28,6 +28,7 @@ public class DropdownAttackSelector : MonoBehaviour {
             Destroy(h);
         }
 
+        int i = 0;
         if (string.Compare(myDropdown.captionText.text, "") != 0)
         {
             AttackDictionary.AttackDescriptor curAttack = myAttacks.FindAttack(myDropdown.captionText.text);
@@ -36,11 +37,15 @@ public class DropdownAttackSelector : MonoBehaviour {
             {
                 Vector3 myLocation = new Vector3(curHitbox.x, curHitbox.y, 10);
 
-                GameObject h = Instantiate(hitTemplate, myLocation, new Quaternion()) as GameObject;
+                Hitbox h = Instantiate(hitTemplate, myLocation, new Quaternion());
 
+                h.setLabel(i.ToString());
+                
                 h.transform.parent = player.transform;
 
                 h.transform.localPosition = myLocation;
+
+                i++;
             }
         }
 
@@ -48,7 +53,9 @@ public class DropdownAttackSelector : MonoBehaviour {
     }
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
+        myDropdown = this.GetComponent<Dropdown>();
         myAttacks = manager.GetComponent<AttackDictionary>();
         hitboxSelector = (DropdownHitboxSelector)hitboxDropdown.GetComponent<DropdownHitboxSelector>();
             

@@ -11,8 +11,8 @@ public class Hitbox : MonoBehaviour
     public struct HitboxDescriptor
     {
         /* Descriptor Data */
-        public int x;
-        public int y;
+        public float x;
+        public float y;
         public int number;
         public float length;
         public float width;
@@ -28,6 +28,7 @@ public class Hitbox : MonoBehaviour
 
     private HitboxDescriptor myDescriptor;
     private BoxCollider2D myCollider;
+    private TextMesh myLabel;
     private int frameCount;
     public bool destroyable;
 
@@ -49,6 +50,7 @@ public class Hitbox : MonoBehaviour
     void Awake()
     {
         myCollider = this.GetComponent<BoxCollider2D>();
+        myLabel = GetComponentInChildren<TextMesh>();
 
         destroyable = false;
         frameCount = 0;
@@ -93,5 +95,9 @@ public class Hitbox : MonoBehaviour
     public HitboxDescriptor getDescriptor()
     {
         return myDescriptor;
+    }
+    public void setLabel(string s)
+    {
+        myLabel.text = s;
     }
 }
