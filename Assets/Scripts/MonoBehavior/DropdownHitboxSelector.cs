@@ -13,7 +13,8 @@ public class DropdownHitboxSelector : MonoBehaviour {
     private AttackDictionary atkDictionary;
     private Dropdown myDropdown;
 
-    private LinkedList<Hitbox.HitboxDescriptor> curList;
+    private SortedList<int, Hitbox.HitboxDescriptor> curList;
+    Hitbox.HitboxDescriptor curHitbox;
 
     [SerializeField]
     private InputField XPos_Textbox;
@@ -29,14 +30,24 @@ public class DropdownHitboxSelector : MonoBehaviour {
     private InputField Duration_Textbox;
     [SerializeField]
     private InputField Damage_Textbox;
+    [SerializeField]
+    private Dropdown  Type_Dropdown;
+    [SerializeField]
+    private Dropdown Add_Tag_Dropdown;
+    [SerializeField]
+    private Dropdown Add_Value_Dropdown;
+    [SerializeField]
+    private Dropdown Remove_Tag_Dropdown;
 
-    public void UpdateHitboxDropdown()
+
+
+    public void UpdateHitboxDropdown(SortedList<int, Hitbox.HitboxDescriptor> newList)
     {
         myDropdown.ClearOptions();
         
-        Debug.Log("CaptionText = " + attackSelector.captionText.text);
-        
         AttackDictionary.AttackDescriptor curAttack = atkDictionary.FindAttack(attackSelector.captionText.text);
+        curList = curAttack.attackList;
+
         {
             int i = 1;
             {
@@ -54,7 +65,22 @@ public class DropdownHitboxSelector : MonoBehaviour {
 
     public void chooseNewHitbox(int newValue)
     {
-        //Update Label Values, Highlight hitbox
+        if (!(curList.TryGetValue(newValue, out curHitbox)))
+            throw new System.NullReferenceException();
+        
+
+        XPos_Textbox.text = curHitbox.x.ToString();
+        YPos_Textbox.text = curHitbox.y.ToString();
+        Length_Textbox.text = curHitbox.length.ToString();
+        Width_Textbox.text = curHitbox.width.ToString();
+        Rotation_Textbox.text = curHitbox.rotation.ToString();
+        Duration_Textbox.text = curHitbox.duration.ToString();
+        Damage_Textbox.text = curHitbox.damage.ToString();
+
+        Type_Dropdown.value = (int)curHitbox.damageType;
+
+
+
 
     }
 

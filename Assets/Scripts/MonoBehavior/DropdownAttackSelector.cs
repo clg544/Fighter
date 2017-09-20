@@ -20,6 +20,10 @@ public class DropdownAttackSelector : MonoBehaviour {
 
     public void DisplayAttack(int newPos)
     {
+        Dropdown.OptionData[] curOptions = myDropdown.options.ToArray();
+        string curAttackKey = curOptions[newPos].text;
+
+        AttackDictionary.AttackDescriptor curAttack = myAttacks.FindAttack(curAttackKey);
 
         GameObject[] activeBox = GameObject.FindGameObjectsWithTag("HitBox");
 
@@ -31,7 +35,7 @@ public class DropdownAttackSelector : MonoBehaviour {
         int i = 0;
         if (string.Compare(myDropdown.captionText.text, "") != 0)
         {
-            AttackDictionary.AttackDescriptor curAttack = myAttacks.FindAttack(myDropdown.captionText.text);
+            curAttack = myAttacks.FindAttack(myDropdown.captionText.text);
 
             foreach (Hitbox.HitboxDescriptor curHitbox in curAttack.attackList.Values)
             {
@@ -49,7 +53,7 @@ public class DropdownAttackSelector : MonoBehaviour {
             }
         }
 
-        hitboxSelector.UpdateHitboxDropdown();
+        hitboxSelector.UpdateHitboxDropdown(curAttack.attackList);
     }
 
 	// Use this for initialization
